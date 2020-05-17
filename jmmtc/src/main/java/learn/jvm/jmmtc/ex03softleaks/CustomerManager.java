@@ -26,6 +26,7 @@ public class CustomerManager {
             }
         }
         return result;
+//        return customers.get(0);  // use it to get OutOfMemoryError
     }
 
     public void printHowManyCustomers() {

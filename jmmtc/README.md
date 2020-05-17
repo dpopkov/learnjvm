@@ -29,3 +29,23 @@ This stops the heap from becoming fragmented over time and makes it easier and q
 for the virtual machine to find memory to allocate to future objects.
 So the garbage collector doesn't really collect any garbage. It actually collects objects which
 are not eligible for garbage collection.
+
+
+### Tuning the Virtual Machine
+
+`-Xms`    set the starting heap size  
+`-Xmx`    set the maximum heap size  
+e.g. `-Xmx512m -Xms150m`  
+`-XX:MaxPermSize`     set the size of the permgen (on Java7 and older)  
+e.g. `-XX:MaxPermSize=256M`  
+`-verbose:gc`     print to the console when a garbage collection takes place  
+`-Xmm`     set the size of the young generation  
+`-XX:+HeapDumpOnOutOfMemoryError`  creates a heap dump file (Oracle Java 8)  
+`-XX:HeapDumpPath=path`     sets path to a heap dump file (Oracle Java 8)  
+
+#### Types of collectors on Oracle JVM
+
+* Serial    `-XX:+UseSerialGC`
+* Parallel  `-XX:+UseParallelGC`
+* Mostly Concurrent Mark-Sweep `-XX:+UseConcMarkSweepGC`
+* Mostly Concurrent G1  `-XX:+UseG1GC`
