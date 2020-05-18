@@ -1,0 +1,40 @@
+package learn.jvm.ujvmmm.m01;
+
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+public class GCMe {
+    long data;
+    long a;
+    long aa;
+    long aaa;
+    long aaaa;
+    long aaaaa;
+    long aaaaaa;
+    long aaaaaaa;
+    long aaaaaaaa;
+    long aaaaaaaaa;
+    long aaaaaaaaaa;
+    long aaaaaaaaaaa;
+    long aaaaaaaaaaaa;
+    long aaaaaaaaaaaaa;
+    long aaaaaaaaaaaaaa;
+    long aaaaaaaaaaaaaaa;
+    long aaaaaaaaaaaaaaaaa;
+    long aaaaaaaaaaaaaaaaaa;
+    long a2;
+    long aa2;
+    long aaa2;
+    long aaaa2;
+    long aaaaa2;
+    long aaaaaa2;
+    long aaaaaaa2;
+    long aaaaaaaa2;
+    long aaaaaaaaa2;
+    long aaaaaaaaaa2;
+    long aaaaaaaaaaa2;
+    long aaaaaaaaaaaa2;
+    long aaaaaaaaaaaaa2;
+    long aaaaaaaaaaaaaa2;
+    long aaaaaaaaaaaaaaa2;
+    long aaaaaaaaaaaaaaaaa2;
+    long aaaaaaaaaaaaaaaaaa2;
+}
