@@ -1,5 +1,6 @@
 package learn.jvm.jmmtc.ex02gc;
 
+import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,27 +16,15 @@ public class GcAndFinalizeExample {
     public static final int KIBIBYTE = 1024;
 
     public static void main(String[] args) throws InterruptedException {
+        CommandLine cmd = prepareCmdOptions(args);
         printMemory("Starting");
 
-        int argIdx = 0;
-        int numObjects = 1_000_000;
-        if (args.length > 0) {
-            numObjects = Integer.parseInt(args[argIdx++]);
-        }
-        boolean runGC = false;
-        if (args.length > argIdx) {
-            runGC = "runGC".equals(args[argIdx++]);
-        }
-        boolean waitGC = false;
-        if (args.length > argIdx) {
-            waitGC = "waitGC".equals(args[argIdx++]);
-        }
-        boolean waitEnd = false;
-        if (args.length > argIdx) {
-            //noinspection UnusedAssignment
-            waitEnd = "waitEnd".equals(args[argIdx++]);
-        }
+        int numObjects = Integer.parseInt(cmd.getOptionValue("numObjects", "10"));
+        boolean runGC = cmd.hasOption("runGC");
+        boolean waitGC = cmd.hasOption("waitGC");
+        boolean waitEnd = cmd.hasOption("waitKey");
 
+        LOG.info("Generating {} objects", numObjects);
         for (int i = 0; i < numObjects; i++) {
             new Customer(Integer.toString(i));
         }
@@ -48,14 +37,44 @@ public class GcAndFinalizeExample {
                 LOG.info("Waiting for GC");
                 giveTimeForGC();
             }
+            printMemory("After GC");
         }
-        printMemory("After GC");
 
         if (waitEnd) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Print any key to finish...");
             scanner.nextLine();
         }
+    }
+
+    private static CommandLine prepareCmdOptions(String[] args) {
+        Options options = new Options();
+        Option numObjects = new Option("n", "numObjects", true, "number of objects");
+        options.addOption(numObjects);
+        options.addOption("runGC", false, "run System.gc()");
+        options.addOption("waitGC", false, "pause to give time for garbage collection");
+        options.addOption("waitKey", false, "wait until user prints any key");
+        options.addOption("help", "print this help");
+        CommandLineParser parser = new DefaultParser();
+
+        CommandLine cmd = null;
+        try {
+            cmd = parser.parse(options, args);
+            if (cmd.hasOption("help")) {
+                printHelp(options);
+                System.exit(0);
+            }
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            printHelp(options);
+            System.exit(1);
+        }
+        return cmd;
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp(GcAndFinalizeExample.class.getSimpleName(), options, true);
     }
 
     private static void giveTimeForGC() throws InterruptedException {
