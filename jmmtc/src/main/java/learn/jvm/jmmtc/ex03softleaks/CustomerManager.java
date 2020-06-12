@@ -9,6 +9,11 @@ import static learn.jvm.jmmtc.ex03softleaks.Helper.sleep;
 public class CustomerManager {
     private final List<Customer> customers = new ArrayList<>();
     private int nextId = 0;
+    private final boolean makeLeak;
+
+    public CustomerManager(boolean makeLeak) {
+        this.makeLeak = makeLeak;
+    }
 
     public void addCustomer(Customer customer) {
         synchronized (this) {
@@ -19,14 +24,17 @@ public class CustomerManager {
     }
 
     public Customer getNextCustomer() {
-        Customer result = null;
-        synchronized (this) {
-            if (customers.size() > 0) {
-                result = customers.remove(0);
+        if (makeLeak) {
+            return customers.get(0);  // use it to get OutOfMemoryError
+        } else {
+            Customer result = null;
+            synchronized (this) {
+                if (customers.size() > 0) {
+                    result = customers.remove(0);
+                }
             }
+            return result;
         }
-        return result;
-//        return customers.get(0);  // use it to get OutOfMemoryError
     }
 
     public void printHowManyCustomers() {
